@@ -19,23 +19,19 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 import os.path
-import sys
 from gensim.models import Word2Vec
+if sys.version_info[0] >= 3:
+  unicode = str
 
 def stopwordslist(filepath = '../Data/weibo/stop_words.txt'):
-    if sys.version_info[0] >= 3:
-        unicode = str
-    # if isinstance(unicode_or_str, str):
-    #     text = unicode_or_str
-    #     decoded = False
-    # else:
-    #     text = unicode_or_str.decode(encoding)
-    #     decoded = True
     stopwords = {}
     for line in open(filepath, 'r').readlines():
-        line = unicode(line, "utf-8").strip()
-        stopwords[line] = 1
-    #stopwords = [line.strip() for line in open(filepath, 'r', encoding='utf-8').readlines()]
+        print(line)
+        print(line.strip)
+        # line = unicode(line, "utf-8").strip()
+        # stopwords[line] = 1
+    stopwords = [line.strip() for line in open(filepath, 'r', encoding='utf-8').readlines()]
+    print(stopwords)
     return stopwords
 
 def clean_str_sst(string):
@@ -110,7 +106,7 @@ def write_data(flag, image, text_only):
         top_data = []
         for k, f in enumerate(file_list):
 
-            f = open(f, 'rb')
+            f = open(f, 'r')
             if (k + 1) % 2 == 1:
                 label = 0  ### real is 0
             else:
@@ -140,7 +136,7 @@ def write_data(flag, image, text_only):
                     line_data.append(l.lower())
 
                 if (i + 1) % 3 == 0:
-                    l = clean_str_sst(unicode(l, "utf-8"))
+                    l = clean_str_sst(l)
 
                     seg_list = jieba.cut_for_search(l)
                     new_seg_list = []
